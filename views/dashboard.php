@@ -11,7 +11,7 @@ endif;
 <div class="container">
     <div class="card mt-5">
         <div class="card-header">
-            <h5>Absensi Harian Siswa</h5>
+            <h5>Dashboard Harian Siswa</h5>
         </div>
         <div class="card-body">
             <table id="table" class="table table-striped table-bordered  d-md-block d-lg-table overflow-auto">
