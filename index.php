@@ -1,3 +1,8 @@
+<?php
+require_once "apps/koneksi.php";
+session_start()
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,7 +21,6 @@
         <div class="info-data" data-infodata="<?php echo $_SESSION['info']; ?>"></div>
     <?php
         session_destroy();
-    // unset($_SESSION['info']);
     endif;
     ?>
 
@@ -25,7 +29,6 @@
             <div class="container w-75">
                 <form action="auth/login_proses.php" method="POST">
                     <h2 class="fw-bold text-center mb-4">Login</h2>
-                    <!-- <div style="border-bottom: 4px solid; margin-bottom: 1rem; border-color: #D5EBFF; width: 20%;"></div> -->
                     <div class="mb-4">
                         <label for="inputUsername" class="form-label">Username</label>
                         <input type="username" name="username" class="form-control" id="inputUsername" placeholder="Masukan Username Anda" required>
@@ -42,13 +45,16 @@
         </div>
         <div class="col-6" style="background-color: #9C254D; height: 100vh;">
             <div class="d-flex justify-content-center align-items-center h-100">
-                <!-- <img class="img-login" src="assets/img/3081783.jpg" alt="background-login" width="500"> -->
             </div>
         </div>
     </div>
     <script src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <script src="assets/script/jquery.js"></script>
+
+    <script src="assets/script/sweetalert.js"></script>
+
+    <script src="assets/script/alert.js"></script>
 
 </body>
 

@@ -44,7 +44,7 @@ $row = mysqli_num_rows($queryRow);
                             <td class="text-center"><?= $absensi['tanggal'] ?></td>
                             <td class="text-center">
                                 <button type="button" data-bs-toggle="modal" data-bs-target="#modalEdit<?= $no ?>" class="btn btn-sm btn-warning text-white">Ubah</button>
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#modalDelete<?= $no ?>" class="btn btn-sm btn-danger text-white">Hapus</button>
+                                <a button class="btn btn-delete btn-sm btn-danger text-white" href="absensi_proses.php?id_absen=<?= $absensi['id_absen'] ?>">Hapus</a>
                             </td>
                         </tr>
                         <!-- Modal edit -->
@@ -55,7 +55,7 @@ $row = mysqli_num_rows($queryRow);
                                         <h1 class="modal-title fs-5" id="exampleModalLabel">Ubah data</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <form method="POST">
+                                    <form action="absensi_proses.php" method="POST">
                                         <div class="modal-body">
                                             <div class="modal-body">
                                                 <div class="mb-3">
@@ -83,27 +83,6 @@ $row = mysqli_num_rows($queryRow);
                                 </div>
                             </div>
                         </div>
-                        <!-- Modal Delete -->
-                        <div class="modal fade" id="modalDelete<?= $no ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Hapus data</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <span class="fs-5 d-flex justify-content-center">Apakah anda yakin akan menghapus data ini?</span>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <form method="POST">
-                                            <input type="hidden" name="id_absen" value="<?= $absensi['id_absen'] ?>">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                            <button type="submit" name="delete" class="btn btn-danger">Hapus</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     <?php } ?>
                 </tbody>
             </table>
@@ -118,7 +97,7 @@ $row = mysqli_num_rows($queryRow);
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="POST">
+            <form action="absensi_proses.php" method="POST">
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label">Nama</label>
@@ -158,62 +137,3 @@ $row = mysqli_num_rows($queryRow);
 </div>
 
 <?php include("../layouts/footer.php") ?>
-
-<?php
-if (isset($_POST['submit'])) {
-    $nama = $_POST['nama'];
-    $keterangan = $_POST['keterangan'];
-    $tanggal = $_POST['tanggal'];
-
-    $queryAbsensi1 = mysqli_query($koneksi, "SELECT * FROM tbl_absensi JOIN tbl_siswa ON tbl_siswa.id_siswa = tbl_absensi.id_siswa WHERE tbl_absensi.tanggal = '$today' AND tbl_absensi.id_siswa = $_POST[nama]");
-
-    if (mysqli_num_rows($queryAbsensi1) > 0) {
-        echo "
-        <script>alert('Nama sudah terdaftar dalam absensi');
-        document.location.href = 'absensi.php';
-        </script>";
-    } else {
-        $querySimpan = mysqli_query($koneksi, "INSERT INTO tbl_absensi VALUES ('','$nama','$keterangan','$tanggal')");
-
-        if ($querySimpan == true) {
-            echo "<script>alert('Data absensi berhasil di tambahkan');</script>";
-            echo "<script>window.location='absensi.php'</script>";
-        } else {
-            echo "<script>alert('Data absensi berhasil di tambahkan');</script>";
-            echo "<script>window.location='absensi.php'</script>";
-        }
-    }
-}
-
-if (isset($_POST['update'])) {
-    $id_absen = $_POST['id_absen'];
-    $keterangan = $_POST['keterangan'];
-
-    $queryUpdate = "UPDATE tbl_absensi SET keterangan='$keterangan' WHERE id_absen = '$id_absen'";
-
-    $query = mysqli_query($koneksi, $queryUpdate);
-
-    if ($query == true) {
-        echo "<script>alert('Data absensi berhasil di ubah');</script>";
-        echo "<script>window.location='absensi.php'</script>";
-    } else {
-        echo "<script>alert('Data absensi gagal di ubah');</script>";
-        echo "<script>window.location='absensi.php'</script>";
-    }
-}
-
-if (isset($_POST['delete'])) {
-
-    $id_absen = $_POST['id_absen'];
-
-    $queryDelete = mysqli_query($koneksi, "DELETE FROM tbl_absensi WHERE id_absen = '$id_absen'");
-
-    if ($queryDelete) {
-        echo "<script>alert('Data absensi berhasil di hapus');</script>";
-        echo "<script>window.location='absensi.php'</script>";
-    } else {
-        echo "<script>alert('Data absensi gagal di hapus');</script>";
-        echo "<script>window.location='absensi.php'</script>";
-    }
-}
-?>

@@ -1,7 +1,7 @@
 <?php
+session_start();
 include_once("../apps/base_url.php");
 include_once("../apps/koneksi.php");
-session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,8 +11,8 @@ session_start();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title ?></title>
-    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../assets/datatables/datatables.min.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>assets/datatables/datatables.min.css">
     <style>
         @media print {
 
@@ -39,21 +39,28 @@ session_start();
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link <?= $active == 'dashboard' ? 'active' : '' ?> fs-6" href="<?php echo $config; ?>views/dashboard.php">Dashboard</a>
+                        <a class="nav-link <?= $active == 'dashboard' ? 'active' : '' ?> fs-6" href="<?php echo $base_url; ?>views/dashboard.php">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?= $active == 'absensi' ? 'active' : '' ?> fs-6" href="<?php echo $config; ?>views/absensi.php">Absensi</a>
+                        <a class="nav-link <?= $active == 'absensi' ? 'active' : '' ?> fs-6" href="<?php echo $base_url; ?>views/absensi.php">Absensi</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?= $active == 'siswa' ? 'active' : '' ?> fs-6" href="<?php echo $config; ?>views/siswa.php">Siswa</a>
+                        <a class="nav-link <?= $active == 'siswa' ? 'active' : '' ?> fs-6" href="<?php echo $base_url; ?>views/siswa.php">Siswa</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?= $active == 'laporan' ? 'active' : '' ?> fs-6" href="<?php echo $config; ?>views/laporan_siswa.php">Laporan Siswa</a>
+                        <a class="nav-link <?= $active == 'laporan' ? 'active' : '' ?> fs-6" href="<?php echo $base_url; ?>views/laporan_siswa.php">Laporan Siswa</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-primary text-white" href="<?php echo $config; ?>auth/logout_proses.php">Logout</a>
+                        <a class="nav-link btn btn-logout btn-primary text-white" href="<?php echo $base_url; ?>auth/logout_proses.php">Logout</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
+
+    <?php if (isset($_SESSION['info'])) : ?>
+        <div class="info-data" data-infodata="<?php echo $_SESSION['info']; ?>"></div>
+    <?php
+        unset($_SESSION['info']);
+    endif;
+    ?>

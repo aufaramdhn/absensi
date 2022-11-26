@@ -1,3 +1,3 @@
 <?php
 
-$config = 'http://localhost/absensi/';
+$base_url = 'http://localhost/absensi/';

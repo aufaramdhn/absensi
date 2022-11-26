@@ -30,7 +30,7 @@ $row = mysqli_num_rows($queryRow);
                 <input href="" type="submit" name="filter" value="Filter" class="btn btn-primary btn-fill pull-right mt-4 me-2 print">
             </div>
             <div class="ms-auto mt-5 print">
-                <a href="" class="btn btn-success mb-2 print" onclick="window.print()">PRINT LAPORAN</a><br>
+                <a href="" class="btn btn-success mb-3 print" onclick="window.print()">PRINT LAPORAN</a><br>
             </div>
         </div>
     </form>

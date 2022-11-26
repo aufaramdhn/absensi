@@ -39,7 +39,7 @@ $querySiswa = mysqli_query($koneksi, "SELECT * FROM tbl_siswa")
                             <td><?= $siswa['notelp'] ?></td>
                             <td class="text-center">
                                 <button type="button" data-bs-toggle="modal" data-bs-target="#modalEdit<?= $no ?>" class="btn btn-sm btn-warning text-white">Ubah</button>
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#modalDelete<?= $no ?>" class="btn btn-sm btn-danger text-white">Hapus</button>
+                                <a button class="btn btn-delete btn-sm btn-danger text-white" href="siswa_proses.php?id_siswa=<?= $siswa['id_siswa'] ?>">Hapus</a>
                             </td>
                         </tr>
                         <!-- Modal edit -->
@@ -50,7 +50,7 @@ $querySiswa = mysqli_query($koneksi, "SELECT * FROM tbl_siswa")
                                         <h1 class="modal-title fs-5" id="exampleModalLabel">Ubah data</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <form method="POST">
+                                    <form action="siswa_proses.php" method="POST">
                                         <div class="modal-body">
                                             <div class="mb-3">
                                                 <label class="form-label">Nama</label>
@@ -78,27 +78,6 @@ $querySiswa = mysqli_query($koneksi, "SELECT * FROM tbl_siswa")
                                 </div>
                             </div>
                         </div>
-                        <!-- Modal Delete -->
-                        <div class="modal fade" id="modalDelete<?= $no ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Hapus data</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <span class="fs-5 d-flex justify-content-center">Apakah anda yakin akan menghapus data ini?</span>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <form action="" method="post">
-                                            <input type="hidden" name="id_siswa" value="<?= $siswa['id_siswa'] ?>">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                            <button type="submit" name="delete" class="btn btn-danger">Hapus</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     <?php } ?>
                 </tbody>
             </table>
@@ -113,7 +92,7 @@ $querySiswa = mysqli_query($koneksi, "SELECT * FROM tbl_siswa")
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Siswa</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="POST">
+            <form action="siswa_proses.php" method="POST">
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label">Nama</label>
@@ -142,56 +121,3 @@ $querySiswa = mysqli_query($koneksi, "SELECT * FROM tbl_siswa")
 </div>
 
 <?php include("../layouts/footer.php") ?>
-
-<?php
-
-if (isset($_POST['submit'])) {
-    $nama = $_POST['nama'];
-    $email = $_POST['email'];
-    $alamat = $_POST['alamat'];
-    $telp = $_POST['notelp'];
-    $queryCreate = mysqli_query($koneksi, "INSERT INTO tbl_siswa VALUES ('','$nama','$email','$alamat','$telp')");
-
-    if ($queryCreate) {
-        echo "<script>alert('Data siswa berhasil di tambahkan');</script>";
-        echo "<script>window.location='siswa.php'</script>";
-    } else {
-        echo "<script>alert('Data siswa gagal di tambahkan');</script>";
-        echo "<script>window.location='siswa.php'</script>";
-    }
-}
-
-if (isset($_POST['update'])) {
-    $id_siswa = $_POST['id_siswa'];
-    $nama = $_POST['nama'];
-    $email = $_POST['email'];
-    $alamat = $_POST['alamat'];
-    $telp = $_POST['notelp'];
-
-    $queryUpdate = mysqli_query($koneksi, "UPDATE tbl_siswa SET nama='$nama',email='$email',alamat='$alamat',notelp='$telp' WHERE id_siswa = '$id_siswa'");
-
-    if ($queryUpdate) {
-        echo "<script>alert('Data siswa berhasil di ubah');</script>";
-        echo "<script>window.location='siswa.php'</script>";
-    } else {
-        echo "<script>alert('Data siswa gagal di ubah');</script>";
-        echo "<script>window.location='siswa.php'</script>";
-    }
-}
-
-if (isset($_POST['delete'])) {
-
-    $id_siswa = $_POST['id_siswa'];
-
-    $queryDelete = mysqli_query($koneksi, "DELETE FROM tbl_siswa WHERE id_siswa = '$id_siswa'");
-
-    if ($queryDelete) {
-        echo "<script>alert('Data siswa berhasil di hapus');</script>";
-        echo "<script>window.location='siswa.php'</script>";
-    } else {
-        echo "<script>alert('Data siswa gagal di hapus');</script>";
-        echo "<script>window.location='siswa.php'</script>";
-    }
-}
-
-?>
