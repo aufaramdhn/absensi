@@ -13,11 +13,11 @@ if (isset($_POST['submit'])) {
 
     if (mysqli_num_rows($data) == 1) {
         if ($password == $row['password']) {
-            $_SESSION['info'] = "Berhasil";
-            header("Location: ../views/dashboard.php");
+            echo "<script>alert('Login Berhasil');</script>";
+            echo "<script>window.location='../views/dashboard.php'</script>";
         } else {
-            $_SESSION['info'] = 'Kosong';
-            header("Location: ../index.php");
+            echo "<script>alert('Login Gagal');</script>";
+            echo "<script>window.location='../index.php'</script>";
         }
     }
 }

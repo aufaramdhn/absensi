@@ -1,20 +1,15 @@
 <?php
-
+$active = 'absensi';
 include("../layouts/header.php");
 
 date_default_timezone_set('Asia/jakarta');
 $today = date("Y-m-d");
 
-$queryAbsensi = mysqli_query($koneksi, "SELECT * FROM tbl_absensi JOIN tbl_siswa ON tbl_siswa.id_siswa = tbl_absensi.id_siswa")
-?>
+$queryAbsensi = mysqli_query($koneksi, "SELECT * FROM tbl_absensi JOIN tbl_siswa ON tbl_siswa.id_siswa = tbl_absensi.id_siswa ORDER BY tanggal DESC");
 
-<!-- Alert -->
-<?php if (isset($_SESSION['info'])) : ?>
-    <div class="info-data" data-infodata="<?php echo $_SESSION['info']; ?>"></div>
-<?php
-    session_destroy();
-// unset($_SESSION['info']);
-endif;
+$queryRow = mysqli_query($koneksi, "SELECT * FROM tbl_absensi JOIN tbl_siswa ON tbl_siswa.id_siswa = tbl_absensi.id_siswa WHERE tanggal = $today");
+
+$row = mysqli_num_rows($queryRow);
 ?>
 
 <div class="container">
@@ -33,6 +28,7 @@ endif;
                         <th>Nama</th>
                         <th>Keterangan</th>
                         <th>Tanggal</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,11 +37,72 @@ endif;
                     foreach ($queryAbsensi as $absensi) {
                     ?>
                         <tr>
-                            <td><?= $no++ ?></td>
+                            <td class="text-end"><?= $no++ ?></td>
                             <td><?= $absensi['nama'] ?></td>
-                            <td><?= $absensi['keterangan'] ?></td>
-                            <td><?= $absensi['tanggal'] ?></td>
+                            <td class="text-center"><?= $absensi['keterangan'] ?></td>
+                            <td class="text-center"><?= $absensi['tanggal'] ?></td>
+                            <td class="text-center">
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#modalEdit<?= $no ?>" class="btn btn-sm btn-warning text-white">Ubah</button>
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#modalDelete<?= $no ?>" class="btn btn-sm btn-danger text-white">Hapus</button>
+                            </td>
                         </tr>
+                        <!-- Modal edit -->
+                        <div class="modal fade" id="modalEdit<?= $no ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Ubah data</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form method="POST">
+                                        <div class="modal-body">
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Nama</label>
+                                                    <input type="hidden" name="id_absen" value="<?= $absensi['id_absen'] ?>">
+                                                    <input type="text" class="form-control" name="nama" value="<?= $absensi['nama'] ?>" readonly>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Keterangan</label>
+                                                    <select class="form-select" name="keterangan" required>
+                                                        <option hidden>-- Pilih Keterangan --</option>
+                                                        <option value="Hadir">Hadir</option>
+                                                        <option value="Izin">Izin</option>
+                                                        <option value="Sakit">Sakit</option>
+                                                        <option value="Alpa">Alpa</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                            <button type="submit" name="update" class="btn btn-success">Simpan</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal Delete -->
+                        <div class="modal fade" id="modalDelete<?= $no ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Hapus data</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <span class="fs-5 d-flex justify-content-center">Apakah anda yakin akan menghapus data ini?</span>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form method="POST">
+                                            <input type="hidden" name="id_absen" value="<?= $absensi['id_absen'] ?>">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                            <button type="submit" name="delete" class="btn btn-danger">Hapus</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     <?php } ?>
                 </tbody>
             </table>
@@ -66,20 +123,23 @@ endif;
                         <label class="form-label">Nama</label>
                         <select class="form-select" name="nama">
                             <option hidden>-- Pilih Siswa --</option>
-                            <?php $query = mysqli_query($koneksi, "SELECT * FROM tbl_siswa");
+                            <?php $query = mysqli_query($koneksi, "SELECT * FROM tbl_siswa WHERE id_siswa NOT IN(SELECT id_siswa FROM tbl_absensi WHERE tanggal = ' " . $today . " ') ORDER BY  nama ASC");
+
                             while ($data = mysqli_fetch_array($query)) {
                             ?>
                                 <option value="<?= $data['id_siswa'] ?>"><?= $data['nama'] ?></option>
                             <?php } ?>
+
                         </select>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Keterangan</label>
-                        <select class="form-select" name="keterangan">
+                        <select class="form-select" name="keterangan" required>
                             <option hidden>-- Pilih Keterangan --</option>
                             <option value="Hadir">Hadir</option>
-                            <option value="Sakit">Sakit</option>
                             <option value="Izin">Izin</option>
+                            <option value="Sakit">Sakit</option>
+                            <option value="Alpa">Alpa</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -104,13 +164,54 @@ if (isset($_POST['submit'])) {
     $keterangan = $_POST['keterangan'];
     $tanggal = $_POST['tanggal'];
 
-    $querySimpan = mysqli_query($koneksi, "INSERT INTO tbl_absensi VALUES ('','$nama','$keterangan','$tanggal')");
+    $queryAbsensi1 = mysqli_query($koneksi, "SELECT * FROM tbl_absensi JOIN tbl_siswa ON tbl_siswa.id_siswa = tbl_absensi.id_siswa WHERE tbl_absensi.tanggal = '$today' AND tbl_absensi.id_siswa = $_POST[nama]");
 
-    if ($querySimpan == true) {
-        echo "<script>alert('Berhasil');</script>";
+    if (mysqli_num_rows($queryAbsensi1) > 0) {
+        echo "
+        <script>alert('Nama sudah terdaftar dalam absensi');
+        document.location.href = 'absensi.php';
+        </script>";
+    } else {
+        $querySimpan = mysqli_query($koneksi, "INSERT INTO tbl_absensi VALUES ('','$nama','$keterangan','$tanggal')");
+
+        if ($querySimpan == true) {
+            echo "<script>alert('Data absensi berhasil di tambahkan');</script>";
+            echo "<script>window.location='absensi.php'</script>";
+        } else {
+            echo "<script>alert('Data absensi berhasil di tambahkan');</script>";
+            echo "<script>window.location='absensi.php'</script>";
+        }
+    }
+}
+
+if (isset($_POST['update'])) {
+    $id_absen = $_POST['id_absen'];
+    $keterangan = $_POST['keterangan'];
+
+    $queryUpdate = "UPDATE tbl_absensi SET keterangan='$keterangan' WHERE id_absen = '$id_absen'";
+
+    $query = mysqli_query($koneksi, $queryUpdate);
+
+    if ($query == true) {
+        echo "<script>alert('Data absensi berhasil di ubah');</script>";
         echo "<script>window.location='absensi.php'</script>";
     } else {
-        echo "<script>alert('Gagal');</script>";
+        echo "<script>alert('Data absensi gagal di ubah');</script>";
+        echo "<script>window.location='absensi.php'</script>";
+    }
+}
+
+if (isset($_POST['delete'])) {
+
+    $id_absen = $_POST['id_absen'];
+
+    $queryDelete = mysqli_query($koneksi, "DELETE FROM tbl_absensi WHERE id_absen = '$id_absen'");
+
+    if ($queryDelete) {
+        echo "<script>alert('Data absensi berhasil di hapus');</script>";
+        echo "<script>window.location='absensi.php'</script>";
+    } else {
+        echo "<script>alert('Data absensi gagal di hapus');</script>";
         echo "<script>window.location='absensi.php'</script>";
     }
 }

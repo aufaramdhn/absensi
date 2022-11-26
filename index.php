@@ -37,7 +37,6 @@
                     <div class="mb-2">
                         <button type="submit" name="submit" class="btn w-100 text-white pt-2 pb-2" style="background-color: #2A3990;">Login</button>
                     </div>
-                    <small class="font-weight-bold">Anda Belum Mempunyai akun? <a class="mt-2" style="color: #2A3990;" href="register/register.php">Buat Akun</a></small>
                 </form>
             </div>
         </div>
@@ -50,12 +49,6 @@
     <script src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <script src="assets/script/jquery.js"></script>
-
-    <script src="assets/js/custom.js"></script>
-
-    <script src="assets/js/sweetalert.js"></script>
-
-    <script src="assets/script/alert.js"></script>
 
 </body>
 

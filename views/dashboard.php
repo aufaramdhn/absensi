@@ -1,11 +1,11 @@
-<?php include("../layouts/header.php") ?>
-<!-- Alert -->
-<?php if (isset($_SESSION['info'])) : ?>
-    <div class="info-data" data-infodata="<?php echo $_SESSION['info']; ?>"></div>
 <?php
-    session_destroy();
-// unset($_SESSION['info']);
-endif;
+$active = 'dashboard';
+include("../layouts/header.php");
+
+date_default_timezone_set('Asia/jakarta');
+$today = date('Y-m-d');
+
+$queryAbsensi = mysqli_query($koneksi, "SELECT * FROM tbl_absensi JOIN tbl_siswa ON tbl_siswa.id_siswa = tbl_absensi.id_siswa WHERE  tbl_absensi.tanggal = '$today' ORDER BY nama ASC");
 ?>
 
 <div class="container">
@@ -24,12 +24,17 @@ endif;
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>No</td>
-                        <td>Nama</td>
-                        <td>Keterangan</td>
-                        <td>Tanggal</td>
-                    </tr>
+                    <?php
+                    $no = 1;
+                    foreach ($queryAbsensi as $absensi) {
+                    ?>
+                        <tr>
+                            <td><?= $no++ ?></td>
+                            <td><?= $absensi['nama'] ?></td>
+                            <td><?= $absensi['keterangan'] ?></td>
+                            <td><?= $absensi['tanggal'] ?></td>
+                        </tr>
+                    <?php } ?>
                 </tbody>
             </table>
         </div>

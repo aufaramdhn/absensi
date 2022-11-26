@@ -1,7 +1,7 @@
 // =============  Data Table - (Start) ================= //
 
 $(document).ready(function () {
-  $("#example").DataTable({});
+  $("#table").DataTable({});
 });
 
 // =============  Data Table - (End) ================= //
