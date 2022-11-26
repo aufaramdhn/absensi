@@ -1,5 +1,6 @@
 <?php
 $active = 'dashboard';
+$title = 'Dashboard | Admin';
 include("../layouts/header.php");
 
 date_default_timezone_set('Asia/jakarta');

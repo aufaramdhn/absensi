@@ -1,5 +1,6 @@
 <?php
 $active = 'absensi';
+$title = 'Absensi | Admin';
 include("../layouts/header.php");
 
 date_default_timezone_set('Asia/jakarta');

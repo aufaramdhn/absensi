@@ -1,5 +1,6 @@
 <?php
 $active = 'siswa';
+$title = 'Siswa | Admin';
 include("../layouts/header.php");
 
 $querySiswa = mysqli_query($koneksi, "SELECT * FROM tbl_siswa")
