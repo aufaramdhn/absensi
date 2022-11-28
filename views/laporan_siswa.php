@@ -16,7 +16,7 @@ $row = mysqli_num_rows($queryRow);
         <h1 class="mt-5">LAPORAN SISWA</h1>
     </center>
     <br>
-    <form method="POST">
+    <form method="get">
         <div class="d-flex align-items-center">
             <div class="me-2 print">
                 <label>Dari Tanggal : </label>
@@ -39,28 +39,39 @@ $row = mysqli_num_rows($queryRow);
             <tr>
                 <th>No</th>
                 <th>Nama</th>
-                <th>Keterangan</th>
-                <th>Tanggal</th>
+                <th>Hadir</th>
+                <th>Sakit</th>
+                <th>Izin</th>
+                <th>Alpa</th>
             </tr>
         </thead>
         <tbody>
             <?php
             $no = 1;
-            if (isset($_POST['filter'])) {
-                $dari_tgl = mysqli_real_escape_string($koneksi, $_POST['dari_tgl']);
-                $sampai_tgl = mysqli_real_escape_string($koneksi, $_POST['sampai_tgl']);
-                $queryAbsensi = mysqli_query($koneksi, "SELECT * FROM tbl_absensi JOIN tbl_siswa ON tbl_siswa.id_siswa = tbl_absensi.id_siswa WHERE tanggal BETWEEN '$dari_tgl' AND '$sampai_tgl'");
-            } else {
-                $queryAbsensi = mysqli_query($koneksi, "SELECT * FROM tbl_absensi JOIN tbl_siswa ON tbl_siswa.id_siswa = tbl_absensi.id_siswa ORDER BY tanggal DESC");
-            }
-            foreach ($queryAbsensi as $absensi) { ?>
-                <tr>
-                    <td><?= $no++ ?></td>
-                    <td><?= $absensi['nama'] ?></td>
-                    <td><?= $absensi['keterangan'] ?></td>
-                    <td><?= $absensi['tanggal'] ?></td>
-                </tr>
-            <?php } ?>
+            $AttendedStudents = $koneksi->query("SELECT * FROM tbl_siswa ORDER BY nama");
+            foreach ($AttendedStudents as $absensi) :
+                if (isset($_GET['filter'])) :
+                    $tanggal_awal = mysqli_real_escape_string($koneksi, $_GET['dari_tgl']);
+                    $tanggal_akhir = mysqli_real_escape_string($koneksi, $_GET['sampai_tgl']);
+            ?>
+                    <tr>
+                        <td><?= $no++ ?></td>
+                        <td><?= $absensi['nama'] ?></td>
+                        <td>
+                            <?= get_total_attend($absensi['id_siswa'], "Hadir", $tanggal_awal, $tanggal_akhir); ?>
+                        </td>
+                        <td>
+                            <?= get_total_attend($absensi['id_siswa'], "Sakit", $tanggal_awal, $tanggal_akhir); ?>
+                        </td>
+                        <td>
+                            <?= get_total_attend($absensi['id_siswa'], "Izin", $tanggal_awal, $tanggal_akhir); ?>
+                        </td>
+                        <td>
+                            <?= get_total_attend($absensi['id_siswa'], "Alpa", $tanggal_awal, $tanggal_akhir); ?>
+                        </td>
+                    </tr>
+                <?php endif; ?>
+            <?php endforeach; ?>
         </tbody>
     </table>
 
