@@ -11,8 +11,8 @@ $queryAbsensi = mysqli_query($koneksi, "SELECT * FROM tbl_absensi JOIN tbl_siswa
 
 <div class="container">
     <div class="card mt-5">
-        <div class="card-header">
-            <h4>Dashboard Harian Siswa</h4>
+        <div class="card-header text-white pt-3" style="background-color: #6A5BE2;">
+            <h4 class="fw-bold">Dashboard Harian Siswa</h4>
         </div>
         <div class="card-body">
             <table id="table" class="table table-striped table-bordered  d-md-block d-lg-table overflow-auto">

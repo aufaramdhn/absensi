@@ -15,9 +15,9 @@ $row = mysqli_num_rows($queryRow);
 
 <div class="container">
     <div class="card mt-5">
-        <div class="card-header">
+        <div class="card-header text-white " style="background-color: #6A5BE2;">
             <div class="d-flex justify-content-between align-items-center px-3 pt-1">
-                <h4>Absensi</h4>
+                <h4 class="fw-bold">Absensi</h4>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Tambah Absen</button>
             </div>
         </div>
@@ -67,7 +67,6 @@ $row = mysqli_num_rows($queryRow);
                                                     <label class="form-label">Keterangan</label>
                                                     <select class="form-select" name="keterangan" required>
                                                         <option hidden>-- Pilih Keterangan --</option>
-                                                        <option value="Hadir">Hadir</option>
                                                         <option value="Izin">Izin</option>
                                                         <option value="Sakit">Sakit</option>
                                                         <option value="Alpa">Alpa</option>
@@ -116,7 +115,6 @@ $row = mysqli_num_rows($queryRow);
                         <label class="form-label">Keterangan</label>
                         <select class="form-select" name="keterangan" required>
                             <option hidden>-- Pilih Keterangan --</option>
-                            <option value="Hadir">Hadir</option>
                             <option value="Izin">Izin</option>
                             <option value="Sakit">Sakit</option>
                             <option value="Alpa">Alpa</option>

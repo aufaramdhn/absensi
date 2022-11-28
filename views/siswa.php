@@ -8,9 +8,9 @@ $querySiswa = mysqli_query($koneksi, "SELECT * FROM tbl_siswa")
 
 <div class="container">
     <div class="card mt-5">
-        <div class="card-header">
-            <div class="d-flex justify-content-between align-items-center px-3 pt-1">
-                <h4>Siswa</h4>
+        <div class="card-header text-white pt-3" style="background-color: #6A5BE2;">
+            <div class="d-flex justify-content-between align-items-center px-3">
+                <h4 class="fw-bold">Siswa</h4>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Tambah Siswa</button>
             </div>
         </div>

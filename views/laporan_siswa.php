@@ -13,7 +13,7 @@ $row = mysqli_num_rows($queryRow);
 
 <div class="container">
     <center>
-        <h1 class="mt-5">LAPORAN SISWA</h1>
+        <h1 class="mt-5 fw-bold">LAPORAN SISWA</h1>
     </center>
     <br>
     <form method="get">
@@ -34,7 +34,7 @@ $row = mysqli_num_rows($queryRow);
             </div>
         </div>
     </form>
-    <table class="table table-bordered">
+    <table class="table table-sm table-bordered">
         <thead>
             <tr>
                 <th>No</th>
